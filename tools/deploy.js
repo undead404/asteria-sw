@@ -6,7 +6,7 @@ import run from './run';
 
 // GitHub Pages
 const remote = {
-  name: 'github',
+  name: 'origin',
   url: 'https://github.com/undead404/asteria-sw.git',
   branch: 'gh-pages',
   website: 'https://undead404.github.io/asteria-sw/',
