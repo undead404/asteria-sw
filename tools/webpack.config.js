@@ -27,6 +27,7 @@ const isAnalyze =
   process.argv.includes('--analyze') || process.argv.includes('--analyse');
 
 const reScript = /\.(js|jsx|mjs)$/;
+const reGraphql = /\.(graphql|gql)$/;
 const reStyle = /\.(css|less|styl|scss|sass|sss)$/;
 const reImage = /\.(bmp|gif|jpg|jpeg|png|svg)$/;
 const staticAssetName = isDebug
@@ -62,9 +63,9 @@ const config = {
   },
 
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['*', '.mjs', '.js', '.jsx', '.json', '.gql', '.graphql'],
     // Allow absolute paths in imports, e.g. import Button from 'components/Button'
-    // Keep in sync with .flowconfig and .eslintrc
+    // Keep in sync with .eslintrc
     modules: ['node_modules', 'src'],
   },
 
@@ -84,6 +85,27 @@ const config = {
 
           // https://babeljs.io/docs/usage/options/
           babelrc: false,
+          plugins: [
+            // Treat React JSX elements as value types and hoist them to the highest scope
+            // https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-constant-elements
+            ...(isDebug ? [] : ['@babel/transform-react-constant-elements']),
+            // Replaces the React.createElement function with one that is more optimized for production
+            // https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-inline-elements
+            ...(isDebug ? [] : ['@babel/transform-react-inline-elements']),
+            // Remove unnecessary React propTypes from the production build
+            // https://github.com/oliviertassinari/babel-plugin-transform-react-remove-prop-types
+            ...(isDebug ? [] : ['transform-react-remove-prop-types']),
+            // Stage 2
+            ['@babel/plugin-proposal-decorators', { legacy: true }],
+            '@babel/plugin-proposal-function-sent',
+            '@babel/plugin-proposal-export-namespace-from',
+            '@babel/plugin-proposal-throw-expressions',
+            // Stage 3
+            '@babel/plugin-syntax-dynamic-import',
+            '@babel/plugin-syntax-import-meta',
+            ['@babel/plugin-proposal-class-properties', { loose: false }],
+            '@babel/plugin-proposal-json-strings',
+          ],
           presets: [
             // A Babel preset that can automatically determine the Babel plugins and polyfills
             // https://github.com/babel/babel-preset-env
@@ -99,26 +121,9 @@ const config = {
                 debug: false,
               },
             ],
-            // Experimental ECMAScript proposals
-            // https://babeljs.io/docs/plugins/#presets-stage-x-experimental-presets-
-            ['@babel/preset-stage-2', { decoratorsLegacy: true }],
-            // Flow
-            // https://github.com/babel/babel/tree/master/packages/babel-preset-flow
-            '@babel/preset-flow',
             // JSX
             // https://github.com/babel/babel/tree/master/packages/babel-preset-react
             ['@babel/preset-react', { development: isDebug }],
-          ],
-          plugins: [
-            // Treat React JSX elements as value types and hoist them to the highest scope
-            // https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-constant-elements
-            ...(isDebug ? [] : ['@babel/transform-react-constant-elements']),
-            // Replaces the React.createElement function with one that is more optimized for production
-            // https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-inline-elements
-            ...(isDebug ? [] : ['@babel/transform-react-inline-elements']),
-            // Remove unnecessary React propTypes from the production build
-            // https://github.com/oliviertassinari/babel-plugin-transform-react-remove-prop-types
-            ...(isDebug ? [] : ['transform-react-remove-prop-types']),
           ],
         },
       },
@@ -182,11 +187,17 @@ const config = {
           // Compile Sass to CSS
           // https://github.com/webpack-contrib/sass-loader
           // Install dependencies before uncommenting: yarn add --dev sass-loader node-sass
-          // {
-          //   test: /\.(scss|sass)$/,
-          //   loader: 'sass-loader',
-          // },
+          {
+            loader: 'sass-loader',
+            test: /\.(scss|sass)$/,
+          },
         ],
+      },
+      // Rules for GraphQL
+      {
+        test: reGraphql,
+        exclude: /node_modules/,
+        loader: 'graphql-tag/loader',
       },
 
       // Rules for images
@@ -243,7 +254,15 @@ const config = {
       // Return public URL for all assets unless explicitly excluded
       // DO NOT FORGET to update `exclude` list when you adding a new loader
       {
-        exclude: [reScript, reStyle, reImage, /\.json$/, /\.txt$/, /\.md$/],
+        exclude: [
+          reScript,
+          reGraphql,
+          reStyle,
+          reImage,
+          /\.json$/,
+          /\.txt$/,
+          /\.md$/,
+        ],
         loader: 'file-loader',
         options: {
           name: staticAssetName,

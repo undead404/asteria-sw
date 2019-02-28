@@ -1,0 +1,21 @@
+query MoviesQuery {
+  movies {
+    items {
+      title
+      rating
+      release
+      cast {
+        castName
+        name
+        media {
+          src
+          type
+        }
+      }
+      media {
+        src
+        type
+      }
+    }
+  }
+}

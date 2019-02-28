@@ -18,6 +18,9 @@ const ContextType = {
   fetch: PropTypes.func.isRequired,
   pathname: PropTypes.string.isRequired,
   query: PropTypes.object,
+  client: PropTypes.object.isRequired,
+  store: PropTypes.object.isRequired,
+  storeSubscription: PropTypes.object,
 };
 
 /**

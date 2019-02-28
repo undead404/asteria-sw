@@ -1,24 +1,32 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import 'whatwg-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import deepForceUpdate from 'react-deep-force-update';
+import { Provider as ReduxProvider } from 'react-redux';
 import queryString from 'query-string';
 import { createPath } from 'history/PathUtils';
+import { graphql } from 'graphql';
+import WebFont from 'webfontloader';
 import App from './components/App';
+import configureStore from './store/configure-store';
 import createFetch from './createFetch';
 import history from './history';
 import { updateMeta } from './DOMUtils';
 import router from './router';
+import schema from './data/schema';
+import createApolloClient from './apollo/create-client.client';
 
+WebFont.load({
+  google: {
+    families: ['Open Sans', 'Oswald'],
+  },
+});
+const customFetch = createFetch(fetch, {
+  baseUrl: window.App.apiUrl,
+  graphql,
+  schema,
+});
+const apolloClient = createApolloClient();
 // Global (context) variables that can be easily accessed from any React component
 // https://facebook.github.io/react/docs/context.html
 const context = {
@@ -32,8 +40,12 @@ const context = {
     };
   },
   // Universal HTTP client
-  fetch: createFetch(fetch, {
-    baseUrl: window.App.apiUrl,
+  fetch: customFetch,
+  client: apolloClient,
+  store: configureStore(window.App.state, {
+    client: apolloClient,
+    fetch: customFetch,
+    history,
   }),
 };
 
@@ -78,7 +90,9 @@ async function onLocationChange(location, action) {
 
     const renderReactApp = isInitialRender ? ReactDOM.hydrate : ReactDOM.render;
     appInstance = renderReactApp(
-      <App context={context}>{route.component}</App>,
+      <ReduxProvider store={context.store}>
+        <App context={context}>{route.component}</App>
+      </ReduxProvider>,
       container,
       () => {
         if (isInitialRender) {
