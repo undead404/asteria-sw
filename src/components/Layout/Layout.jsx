@@ -27,6 +27,7 @@ export default class Layout extends React.Component {
       >
         <Header query={this.props.query} />
         {this.props.children}
+        <div className={style.credits}>vitalii.perehonchuk@eliftech.com</div>
       </div>
     );
   }
