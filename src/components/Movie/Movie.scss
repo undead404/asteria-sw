@@ -1,0 +1,81 @@
+@import '../variables.scss';
+
+.axis {
+  background-image: linear-gradient(transparent, white, transparent);
+  height: 50vh;
+  width: 2px;
+}
+
+.axisContainer {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.poster {
+  width: $posterWidth;
+}
+
+.posterContainer {
+  background-color: black;
+  border-color: $blue;
+  border-style: groove;
+  border-width: 2px;
+  min-height: $posterWidth / 2 * 3;
+  position: relative;
+  width: $posterWidth;
+  z-index: 1;
+}
+
+.posterWrapper {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width: calc(80vw / 8);
+}
+
+.release {
+  bottom: -3rem;
+  color: grey;
+  font-size: 10px;
+  font-weight: 200;
+  position: absolute;
+}
+
+.root {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 50vh;
+  position: relative;
+}
+
+.title {
+  background-color: white;
+  color: $lightgreen;
+  display: inline;
+  font-family: $fontFamilyPretty;
+  font-size: 0.9rem;
+  font-weight: 200;
+  //   left: -1.5vw;
+  line-height: 20px;
+  padding: 3px;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  //   width: 10vw;
+}
+
+.titleContainer {
+  border-color: $blue;
+  border-width: 1px;
+  bottom: 5px;
+  display: block;
+  height: 20px;
+  position: absolute;
+  top: $posterWidth / 6 * 7;
+  z-index: 1;
+}

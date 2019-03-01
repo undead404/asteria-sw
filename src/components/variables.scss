@@ -39,10 +39,15 @@
 }
 
 /* Asteria fonts */
-$fontFamilyBase: 'Open Sans', sans-serif;
+$fontFamilyBase: 'Open Sans',
+  sans-serif;
+$fontFamilyPretty: 'Oswald',
+  sans-serif;
 
 /* Asteria colors */
 $lightgreen: #1dc832;
 $blue: #4b5172;
 $black: #212121;
 $bluegreen: #3a5a5f;
+
+$posterWidth: 85px;

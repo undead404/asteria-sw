@@ -43,7 +43,6 @@ export default class Header extends React.Component {
     this.state = {
       movies: props.movies,
     };
-    console.info(this.state);
   }
 
   getCast() {
@@ -55,11 +54,11 @@ export default class Header extends React.Component {
     const mergedCast = cast.reduce(
       (mergedCastObj, castItem) => ({
         ...mergedCastObj,
-        [castItem.name]: {
+        [castItem.castName]: {
           ...castItem,
           occurencies:
-            (mergedCastObj[castItem.name]
-              ? mergedCastObj[castItem.name].occurencies
+            (mergedCastObj[castItem.castName]
+              ? mergedCastObj[castItem.castName].occurencies
               : 0) + 1,
         },
       }),
@@ -67,14 +66,10 @@ export default class Header extends React.Component {
     );
     const topCast = Object.entries(mergedCast);
     topCast.sort((a, b) => b[1].occurencies - a[1].occurencies);
-    console.info(topCast);
-    return topCast
-      .slice(0, 5)
-      .map(entry => entry[1])
-      .map(castItem => ({
-        src: castItem.media.find(media => media.type === 'image').src,
-        name: castItem.name,
-      }));
+    return topCast.map(entry => entry[1]).map(castItem => ({
+      src: castItem.media.find(media => media.type === 'image').src,
+      castName: castItem.castName,
+    }));
   }
   static getDerivedStateFromProps(props) {
     return {
@@ -89,12 +84,12 @@ export default class Header extends React.Component {
         </Link>
         <div className={style.portraits}>
           {this.getCast().map(cast => (
-            <div className={style.portraitContainer} key={cast.name}>
+            <div className={style.portraitContainer} key={cast.castName}>
               <img
-                alt={cast.name}
+                alt={cast.castName}
                 className={style.portrait}
                 src={cast.src}
-                title={cast.name}
+                title={cast.castName}
               />
             </div>
           ))}

@@ -134,7 +134,7 @@ exports[`Layout renders children correctly 1`] = `
         href="/"
         onClick={[Function]}
       >
-        Home
+        Timeline
       </a>
       <span
         className="spacer"

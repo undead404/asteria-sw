@@ -4,7 +4,11 @@ query MoviesQuery {
       title
       rating
       release
+      trivia {
+        universeTimeline
+      }
       cast {
+        id
         castName
         name
         media {

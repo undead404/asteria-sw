@@ -14,7 +14,7 @@
 }
 
 .container {
-  background: linear-gradient($lightgreen, transparent);
+  background: linear-gradient(rgba($lightgreen, 0.3), transparent);
   display: flex;
   justify-content: center;
 }
@@ -32,8 +32,8 @@
 }
 
 .portraitContainer {
-  width: 3rem;
-  height: 3rem;
+  width: 25px;
+  height: 25px;
   position: relative;
   overflow: hidden;
   margin: 0.25rem;

@@ -6,8 +6,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import normalizeCss from 'normalize.css';
 import style from './Layout.scss';
 import Header from '../Header';
-import Feedback from '../Feedback';
-import Footer from '../Footer';
+import nightSky from './night-sky.png';
 
 @withStyles(normalizeCss, style)
 export default class Layout extends React.Component {
@@ -17,11 +16,12 @@ export default class Layout extends React.Component {
 
   render() {
     return (
-      <div>
+      <div
+        className={style.root}
+        style={{ backgroundImage: `url(${nightSky})` }}
+      >
         <Header />
         {this.props.children}
-        <Feedback />
-        <Footer />
       </div>
     );
   }

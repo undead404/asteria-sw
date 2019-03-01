@@ -1,6 +1,6 @@
 {
-  "name": "Page",
+  "name": "Movie",
   "version": "0.0.0",
   "private": true,
-  "main": "./Page.jsx"
+  "main": "./Movie.jsx"
 }
