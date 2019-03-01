@@ -151,24 +151,48 @@ export default class Header extends React.Component {
         <div className={style.portraits}>
           {this.getCast().map(cast => (
             <Link
-              className={style.portraitContainer}
+              className={style.castLink}
               key={cast.castName}
               style={
                 this.isCastActive(cast.castName)
                   ? {
-                      backgroundColor: 'rgba(58, 90, 95, .25)',
-                      border: '2px groove #1dc832',
+                      width: '60px',
                     }
                   : undefined
               }
               to={this.getCastLink(cast.castName)}
             >
-              <img
-                alt={cast.castName}
-                className={style.portrait}
-                src={cast.src}
-                title={cast.castName}
-              />
+              <div
+                className={style.portraitContainer}
+                style={
+                  this.isCastActive(cast.castName)
+                    ? {
+                        height: '50px',
+                        width: '50px',
+                      }
+                    : undefined
+                }
+                to={this.getCastLink(cast.castName)}
+              >
+                <img
+                  alt={cast.castName}
+                  className={style.portrait}
+                  src={cast.src}
+                  title={cast.castName}
+                />
+              </div>
+              <span
+                className={style.castName}
+                style={
+                  this.isCastActive(cast.castName)
+                    ? {
+                        display: 'initial',
+                      }
+                    : undefined
+                }
+              >
+                {cast.castName}
+              </span>
             </Link>
           ))}
         </div>

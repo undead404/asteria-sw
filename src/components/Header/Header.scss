@@ -9,6 +9,27 @@
 
 @import '../variables.scss';
 
+.castLink {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-family: $fontFamilyBase;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+}
+
+.castName {
+  bottom: -14px;
+  color: white;
+  display: none;
+  font-family: $fontFamilyBase;
+  font-size: 12px;
+  position: absolute;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 .container {
   background: linear-gradient(rgba($lightgreen, 0.3), transparent);
   display: flex;
@@ -60,6 +81,7 @@
 }
 
 .portraits {
+  align-items: center;
   display: flex;
   padding: 0.5rem;
   position: fixed;

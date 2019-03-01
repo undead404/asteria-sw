@@ -18,7 +18,7 @@ import createApolloClient from './apollo/create-client.client';
 
 WebFont.load({
   google: {
-    families: ['"Open Sans":200,400', 'Oswald:200,400'],
+    families: ['Open Sans:200,400', 'Oswald:200,400'],
   },
 });
 const customFetch = createFetch(fetch, {
