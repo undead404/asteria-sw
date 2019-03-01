@@ -29,6 +29,7 @@ export default class Movie extends React.Component {
     minDuration: PropTypes.number.isRequired,
     movie: PropTypes.shape({
       duration: PropTypes.number.isRequired,
+      inactive: PropTypes.bool,
       media: PropTypes.arrayOf(
         PropTypes.shape({
           src: PropTypes.string.isRequired,
@@ -89,11 +90,13 @@ export default class Movie extends React.Component {
     return (
       <Link
         key={this.props.movie.title}
-        className={style.root}
+        className={`${style.root} ${
+          this.props.movie.inactive ? style.inactive : undefined
+        }`}
         style={{
-          backgroundColor: this.isActive()
-            ? 'rgba(58, 90, 95, .25)'
-            : undefined,
+          // backgroundColor: this.isActive()
+          //   ? 'rgba(58, 90, 95, .25)'
+          //   : undefined,
           width: this.props.width,
         }}
         to={this.getLink()}

@@ -11,13 +11,12 @@ import starWarsLogo from './Star_Wars.svg';
 
 @withStyles(style)
 @connect(state => ({
-  allMovies: state.movies.allMovies,
   movies: state.movies.movies,
 }))
 @ReactAutoBinder
 export default class Header extends React.Component {
   static propTypes = {
-    allMovies: PropTypes.arrayOf(
+    movies: PropTypes.arrayOf(
       PropTypes.shape({
         cast: PropTypes.arrayOf(
           PropTypes.shape({
@@ -40,6 +39,7 @@ export default class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      movies: props.movies || [],
       query: props.query || {},
     };
   }
@@ -54,13 +54,13 @@ export default class Header extends React.Component {
     return stateChange;
   }
   getCast() {
-    if (!this.props.allMovies) return [];
+    if (!this.state.movies) return [];
     let movies;
     if (!this.state.query || !this.state.query.movieTitle) {
-      movies = this.props.allMovies;
+      movies = this.state.movies;
     } else {
       const movieTitle = decodeURIComponent(this.state.query.movieTitle);
-      movies = [this.props.allMovies.find(movie => movie.title === movieTitle)];
+      movies = [this.state.movies.find(movie => movie.title === movieTitle)];
     }
     const cast = movies.reduce(
       (castList, movie) => [...castList, ...movie.cast],

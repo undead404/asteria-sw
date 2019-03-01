@@ -9,6 +9,7 @@ import makeRequest from '../utils/make-request';
 function compareByRelease(movie1, movie2) {
   return movie1.release.localeCompare(movie2.release);
 }
+
 function compareByTimeline(movie1, movie2) {
   const aby1 = movie1.trivia.universeTimeline.indexOf('ABY');
   const aby2 = movie2.trivia.universeTimeline.indexOf('ABY');
@@ -58,15 +59,16 @@ export default function getMovies(params) {
         };
       },
       function receiveMovies(response) {
-        const allMovies = response.data.movies.items;
-        let movies = allMovies;
+        let movies = response.data.movies.items;
         if (params.castName) {
-          movies = movies.filter(movie =>
-            movie.cast.some(cast => cast.castName === params.castName),
-          );
+          movies = movies.map(movie => ({
+            ...movie,
+            inactive: !movie.cast.some(
+              cast => cast.castName === params.castName,
+            ),
+          }));
         }
         return {
-          allMovies,
           error: null,
           movies: fillMoviesDurations(
             movies.sort(
