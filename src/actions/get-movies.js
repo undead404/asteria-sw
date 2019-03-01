@@ -58,13 +58,15 @@ export default function getMovies(params) {
         };
       },
       function receiveMovies(response) {
-        let movies = response.data.movies.items;
+        const allMovies = response.data.movies.items;
+        let movies = allMovies;
         if (params.castName) {
           movies = movies.filter(movie =>
             movie.cast.some(cast => cast.castName === params.castName),
           );
         }
         return {
+          allMovies,
           error: null,
           movies: fillMoviesDurations(
             movies.sort(

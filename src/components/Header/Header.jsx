@@ -11,12 +11,13 @@ import starWarsLogo from './Star_Wars.svg';
 
 @withStyles(style)
 @connect(state => ({
+  allMovies: state.movies.allMovies,
   movies: state.movies.movies,
 }))
 @ReactAutoBinder
 export default class Header extends React.Component {
   static propTypes = {
-    movies: PropTypes.arrayOf(
+    allMovies: PropTypes.arrayOf(
       PropTypes.shape({
         cast: PropTypes.arrayOf(
           PropTypes.shape({
@@ -39,7 +40,6 @@ export default class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      movies: props.movies || [],
       query: props.query || {},
     };
   }
@@ -54,13 +54,13 @@ export default class Header extends React.Component {
     return stateChange;
   }
   getCast() {
-    if (!this.state.movies) return [];
+    if (!this.props.allMovies) return [];
     let movies;
     if (!this.state.query || !this.state.query.movieTitle) {
-      movies = this.state.movies;
+      movies = this.props.allMovies;
     } else {
       const movieTitle = decodeURIComponent(this.state.query.movieTitle);
-      movies = [this.state.movies.find(movie => movie.title === movieTitle)];
+      movies = [this.props.allMovies.find(movie => movie.title === movieTitle)];
     }
     const cast = movies.reduce(
       (castList, movie) => [...castList, ...movie.cast],
@@ -69,18 +69,13 @@ export default class Header extends React.Component {
     const mergedCast = cast.reduce(
       (mergedCastObj, castItem) => ({
         ...mergedCastObj,
-        [castItem.castName]: {
-          ...castItem,
-          occurencies:
-            (mergedCastObj[castItem.castName]
-              ? mergedCastObj[castItem.castName].occurencies
-              : 0) + 1,
-        },
+        [castItem.castName]: castItem,
       }),
       {},
     );
     const topCast = Object.entries(mergedCast);
-    topCast.sort((a, b) => b[1].occurencies - a[1].occurencies);
+    topCast.sort((a, b) => a[1].castName.localeCompare(b[1].castName));
+    // topCast.sort((a, b) => b[1].occurencies - a[1].occurencies);
     return topCast.map(entry => entry[1]).map(castItem => ({
       src: castItem.media.find(media => media.type === 'image').src,
       castName: castItem.castName,
