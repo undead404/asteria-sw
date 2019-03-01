@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import style from './Movie.scss';
 import Link from '../Link';
+import MovieModal from '../MovieModal';
 
 const MONTH_NAMES = [
   'January',
@@ -47,6 +48,17 @@ export default class Movie extends React.Component {
     }).isRequired,
     width: PropTypes.string.isRequired,
   };
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalShown: false,
+    };
+  }
+  componentDidMount() {
+    if (this.isActive()) {
+      this.showModal();
+    }
+  }
   getActiveMovieTitle() {
     return decodeURIComponent(this.props.query.movieTitle);
   }
@@ -83,46 +95,64 @@ export default class Movie extends React.Component {
       (this.props.movie.duration - this.props.minDuration) /
         (this.props.maxDuration - this.props.minDuration)})`;
   }
+  closeModal() {
+    this.setState({
+      modalShown: false,
+    });
+  }
   isActive() {
     return this.getActiveMovieTitle() === this.props.movie.title;
   }
+  showModal() {
+    console.info('show modal');
+    this.setState({
+      modalShown: true,
+    });
+  }
   render() {
     return (
-      <Link
-        key={this.props.movie.title}
-        className={`${style.root} ${
-          this.props.movie.inactive ? style.inactive : undefined
-        }`}
-        style={{
-          // backgroundColor: this.isActive()
-          //   ? 'rgba(58, 90, 95, .25)'
-          //   : undefined,
-          width: this.props.width,
-        }}
-        to={this.getLink()}
-      >
-        <div
-          className={style.posterWrapper}
-          style={{ top: this.getTopOffset(), width: this.props.width }}
+      <>
+        <Link
+          key={this.props.movie.title}
+          className={`${style.root} ${
+            this.props.movie.inactive ? style.inactive : undefined
+          }`}
+          style={{
+            filter: this.state.modalShown ? 'opacity(30%)' : undefined,
+            width: this.props.width,
+          }}
+          onClick={this.showModal}
+          to={this.getLink()}
         >
-          <div className={style.posterContainer}>
-            <img
-              alt={this.props.movie.title}
-              className={style.poster}
-              src={
-                this.props.movie.media.find(media => media.type === 'image').src
-              }
-            />
+          <div
+            className={style.posterWrapper}
+            style={{ top: this.getTopOffset(), width: this.props.width }}
+          >
+            <div className={style.posterContainer}>
+              <img
+                alt={this.props.movie.title}
+                className={style.poster}
+                src={
+                  this.props.movie.media.find(media => media.type === 'image')
+                    .src
+                }
+              />
+            </div>
+            <div className={style.titleContainer}>
+              <div className={style.title}>{this.props.movie.title}</div>
+            </div>
           </div>
-          <div className={style.titleContainer}>
-            <div className={style.title}>{this.props.movie.title}</div>
+          <div className={style.release}>{this.getReleaseDate()}</div>
+          <div className={style.axisContainer}>
+            <div className={style.axis} />
           </div>
-        </div>
-        <div className={style.release}>{this.getReleaseDate()}</div>
-        <div className={style.axisContainer}>
-          <div className={style.axis} />
-        </div>
-      </Link>
+        </Link>
+        <MovieModal
+          close={this.closeModal}
+          show={this.state.modalShown}
+          movie={this.props.movie}
+        />
+      </>
     );
   }
 }

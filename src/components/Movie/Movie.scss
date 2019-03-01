@@ -27,6 +27,7 @@
   border-color: $blue;
   border-style: groove;
   border-width: 2px;
+  filter: brightness(100%);
   min-height: $posterWidth / 2 * 3;
   position: relative;
   width: $posterWidth;

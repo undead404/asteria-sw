@@ -68,6 +68,13 @@ export default function getMovies(params) {
             ),
           }));
         }
+        if (params.movieTitle) {
+          const movieTitle = decodeURIComponent(params.movieTitle);
+          movies = movies.map(movie => ({
+            ...movie,
+            inactive: movie.title !== movieTitle,
+          }));
+        }
         return {
           error: null,
           movies: fillMoviesDurations(
