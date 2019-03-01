@@ -1,10 +1,11 @@
 import { ApolloClient } from 'apollo-client';
 import { from } from 'apollo-link';
 import { onError } from 'apollo-link-error';
-import { SchemaLink } from 'apollo-link-schema';
+import { HttpLink } from 'apollo-link-http';
+import fetch from 'node-fetch';
 import createCache from './create-cache';
 
-export default function createApolloClient(schema) {
+export default function createApolloClient() {
   // console.info(schema);
   const link = from([
     onError(({ graphQLErrors, networkError }) => {
@@ -16,14 +17,17 @@ export default function createApolloClient(schema) {
         );
       if (networkError) console.warn(`[Network error]: ${networkError}`);
     }),
-    new SchemaLink({ ...schema }),
+    new HttpLink({
+      fetch,
+      uri: 'http://starwars.asteriainc.se/graphql',
+    }),
   ]);
 
   return new ApolloClient({
     link,
     cache: createCache(),
     ssrMode: true,
-    // queryDeduplication: true,
+    queryDeduplication: true,
     uri: 'http://starwars.asteriainc.se/graphql',
   });
 }

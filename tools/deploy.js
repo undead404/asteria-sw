@@ -5,21 +5,21 @@ import { makeDir, moveDir, cleanDir } from './lib/fs';
 import run from './run';
 
 // GitHub Pages
-const remote = {
-  name: 'origin',
-  url: 'https://github.com/undead404/asteria-sw.git',
-  branch: 'gh-pages',
-  website: 'https://undead404.github.io/asteria-sw/',
-  static: true,
-};
+// const remote = {
+//   name: 'origin',
+//   url: 'https://github.com/undead404/asteria-sw.git',
+//   branch: 'gh-pages',
+//   website: 'https://undead404.github.io/asteria-sw/',
+//   static: true,
+// };
 
 // Heroku
-// const remote = {
-//   name: 'heroku',
-//   url: 'https://git.heroku.com/<app>.git',
-//   branch: 'master',
-//   website: 'https://<app>.herokuapp.com',
-// };
+const remote = {
+  name: 'heroku',
+  url: 'https://git.heroku.com/asteria-sw.git',
+  branch: 'master',
+  website: 'https://asteria-sw.herokuapp.com',
+};
 
 // Azure Web Apps
 // const remote = {

@@ -21,12 +21,10 @@ export default function createFetch(
   };
 
   return async (url, options) => {
-    console.info('fetch', url, options);
     const isGraphQL = true;
     if (schema && graphql && isGraphQL) {
       // We're SSR, so route the graphql internal to avoid latency
       const query = JSON.parse(options.body);
-      console.info(query);
       const result = await graphql(
         schema,
         query,

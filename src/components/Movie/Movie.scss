@@ -19,7 +19,7 @@
 }
 
 .posterContainer {
-  background-color: black;
+  background-color: $black;
   border-color: $blue;
   border-style: groove;
   border-width: 2px;
@@ -55,6 +55,9 @@
 
 .title {
   background-color: white;
+  border-color: $bluegreen;
+  border-style: solid;
+  border-width: 1px;
   color: $lightgreen;
   display: inline;
   font-family: $fontFamilyPretty;
@@ -70,8 +73,6 @@
 }
 
 .titleContainer {
-  border-color: $blue;
-  border-width: 1px;
   bottom: 5px;
   display: block;
   height: 20px;

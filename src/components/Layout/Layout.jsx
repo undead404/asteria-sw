@@ -12,6 +12,11 @@ import nightSky from './night-sky.png';
 export default class Layout extends React.Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
+    query: PropTypes.shape({
+      castName: PropTypes.string,
+      order: PropTypes.string,
+      movieTitle: PropTypes.string,
+    }).isRequired,
   };
 
   render() {
@@ -20,7 +25,7 @@ export default class Layout extends React.Component {
         className={style.root}
         style={{ backgroundImage: `url(${nightSky})` }}
       >
-        <Header />
+        <Header query={this.props.query} />
         {this.props.children}
       </div>
     );

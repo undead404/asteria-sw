@@ -19,6 +19,7 @@ export default function movies(state = {}, action) {
       };
     case GET_MOVIES_SUCCESS:
       return {
+        allMovies: action.movies,
         ...state,
         acquisition: false,
         error: null,

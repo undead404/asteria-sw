@@ -6,6 +6,30 @@ import {
 import moviesQuery from '../graphql-queries/movies.graphql';
 import makeRequest from '../utils/make-request';
 
+function compareByRelease(movie1, movie2) {
+  return movie1.release.localeCompare(movie2.release);
+}
+function compareByTimeline(movie1, movie2) {
+  const aby1 = movie1.trivia.universeTimeline.indexOf('ABY');
+  const aby2 = movie2.trivia.universeTimeline.indexOf('ABY');
+  if (aby1 !== -1 && aby2 === -1) {
+    return 1;
+  }
+  if (aby1 === -1 && aby2 !== -1) {
+    return -1;
+  }
+  if (aby1 !== -1 && aby2 !== -1) {
+    return (
+      parseInt(movie1.trivia.universeTimeline, 10) -
+      parseInt(movie2.trivia.universeTimeline, 10)
+    );
+  }
+  return (
+    parseInt(movie2.trivia.universeTimeline, 10) -
+    parseInt(movie1.trivia.universeTimeline, 10)
+  );
+}
+
 const DURATIONS = {
   'Episode I – The Phantom Menace': 136,
   'Episode II – Attack of the Clones': 142,
@@ -18,38 +42,47 @@ const DURATIONS = {
 };
 
 function fillMoviesDurations(movies) {
-  movies.sort((a, b) => a.release.localeCompare(b.release));
-  console.info(movies);
   return movies.map(movie => ({
     ...movie,
     duration: DURATIONS[movie.title],
   }));
 }
 
-function requestMovies() {
-  return {
-    type: GET_MOVIES_REQUEST,
-  };
-}
-
-function receiveMovies(response) {
-  return {
-    error: null,
-    movies: fillMoviesDurations(response.data.movies.items),
-    type: GET_MOVIES_SUCCESS,
-  };
-}
-
-function receiveMoviesError(error) {
-  return {
-    error,
-    type: GET_MOVIES_FAILURE,
-  };
-}
-
-export default function getMovies() {
+export default function getMovies(params) {
   return makeRequest(
-    [requestMovies, receiveMovies, receiveMoviesError],
+    [
+      function requestMovies() {
+        return {
+          ...params,
+          type: GET_MOVIES_REQUEST,
+        };
+      },
+      function receiveMovies(response) {
+        let movies = response.data.movies.items;
+        if (params.castName) {
+          movies = movies.filter(movie =>
+            movie.cast.some(cast => cast.castName === params.castName),
+          );
+        }
+        return {
+          error: null,
+          movies: fillMoviesDurations(
+            movies.sort(
+              params.order && params.order === 'timeline'
+                ? compareByTimeline
+                : compareByRelease,
+            ),
+          ),
+          type: GET_MOVIES_SUCCESS,
+        };
+      },
+      function receiveMoviesError(error) {
+        return {
+          error,
+          type: GET_MOVIES_FAILURE,
+        };
+      },
+    ],
     moviesQuery,
   );
 }
