@@ -12,6 +12,7 @@ import starWarsLogo from './Star_Wars.svg';
 @withStyles(style)
 @connect(state => ({
   movies: state.movies.movies,
+  query: state.query.query,
 }))
 @ReactAutoBinder
 export default class Header extends React.Component {
@@ -143,6 +144,7 @@ export default class Header extends React.Component {
         <Link className={style.container} to=".">
           <img className={style.logo} src={starWarsLogo} alt="Star Wars" />
         </Link>
+
         <div className={style.portraits}>
           {this.getCast().map(cast => (
             <Link

@@ -9,8 +9,8 @@ export default async function action(context) {
     title: 'Star Wars Saga',
     chunks: ['timeline'],
     component: (
-      <Layout query={context.query}>
-        <Timeline query={context.query} />
+      <Layout>
+        <Timeline />
       </Layout>
     ),
   };

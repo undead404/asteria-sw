@@ -62,7 +62,9 @@ app.get('*', async (req, res, next) => {
     });
 
     const store = configureStore(
-      {},
+      {
+        query: { query: req.query },
+      },
       {
         client: apolloClient,
         // I should not use `history` on server.. but how I do redirection? follow universal-router

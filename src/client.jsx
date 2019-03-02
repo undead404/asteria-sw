@@ -11,6 +11,7 @@ import configureStore from './store/configure-store';
 import history from './history';
 import router from './router';
 import createApolloClient from './apollo/create-client.client';
+import changeQuery from './actions/change-query';
 
 WebFont.load({
   google: {
@@ -37,6 +38,12 @@ const context = {
     history,
   }),
 };
+history.listen(location => {
+  const params = location.search
+    ? queryString.parse(location.search.slice(1))
+    : {};
+  context.store.dispatch(changeQuery(params));
+});
 
 const container = document.getElementById('app');
 let currentLocation = history.location;

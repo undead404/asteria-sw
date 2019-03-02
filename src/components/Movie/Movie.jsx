@@ -1,6 +1,7 @@
 import queryString from 'query-string';
 import React from 'react';
 import ReactAutoBinder from 'react-auto-binder';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import style from './Movie.scss';
@@ -23,6 +24,9 @@ const MONTH_NAMES = [
 ];
 
 @withStyles(style)
+@connect(state => ({
+  query: state.query.query,
+}))
 @ReactAutoBinder
 export default class Movie extends React.Component {
   static propTypes = {

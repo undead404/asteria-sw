@@ -28,6 +28,7 @@ function getMinDuration(movies) {
 @connect(state => ({
   error: state.movies.error,
   movies: state.movies.movies,
+  query: state.query.query,
 }))
 export default class Timeline extends React.Component {
   static propTypes = {
@@ -39,11 +40,6 @@ export default class Timeline extends React.Component {
         release: PropTypes.string,
       }),
     ).isRequired,
-    query: PropTypes.shape({
-      castName: PropTypes.string,
-      order: PropTypes.string,
-      movieTitle: PropTypes.string,
-    }).isRequired,
   };
   static defaultProps = {
     error: null,
@@ -55,7 +51,6 @@ export default class Timeline extends React.Component {
       maxDuration: getMaxDuration(props.movies),
       minDuration: getMinDuration(props.movies),
       movies: props.movies || [],
-      query: props.query || {},
     };
   }
 
@@ -65,9 +60,6 @@ export default class Timeline extends React.Component {
       stateChange.maxDuration = getMaxDuration(props.movies);
       stateChange.minDuration = getMinDuration(props.movies);
       stateChange.movies = props.movies;
-    }
-    if (!fastDeepEqual(props.query, state.query)) {
-      stateChange.query = props.query;
     }
     if (props.error !== state.error) {
       stateChange.error = props.error;
@@ -93,7 +85,6 @@ export default class Timeline extends React.Component {
                   maxDuration={this.state.maxDuration}
                   minDuration={this.state.minDuration}
                   movie={movie}
-                  query={this.state.query}
                   width={`${80 / this.state.movies.length}vw`}
                 />
               ))
