@@ -14,10 +14,9 @@ import config from '../config';
 
 /* eslint-disable react/no-danger */
 
-class Html extends React.Component {
+export default class Html extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
     styles: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.string.isRequired,
@@ -35,14 +34,22 @@ class Html extends React.Component {
   };
 
   render() {
-    const { title, description, styles, scripts, app, children } = this.props;
+    const { title, styles, scripts, app, children } = this.props;
     return (
       <html className="no-js" lang="en">
         <head>
+          <link
+            rel="dns-prefetch preconnect"
+            href="http://starwars.asteriainc.se"
+            crossOrigin
+          />
           <meta charSet="utf-8" />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
           <title>{title}</title>
-          <meta name="description" content={description} />
+          <meta
+            name="description"
+            content="Vitalii Perehonchuk's test task for Asteria"
+          />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           {scripts.map(script => (
             <link key={script} rel="preload" href={script} as="script" />
@@ -86,5 +93,3 @@ class Html extends React.Component {
     );
   }
 }
-
-export default Html;

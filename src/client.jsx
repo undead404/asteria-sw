@@ -5,26 +5,17 @@ import deepForceUpdate from 'react-deep-force-update';
 import { Provider as ReduxProvider } from 'react-redux';
 import queryString from 'query-string';
 import { createPath } from 'history/PathUtils';
-import { graphql } from 'graphql';
 import WebFont from 'webfontloader';
 import App from './components/App';
 import configureStore from './store/configure-store';
-import createFetch from './createFetch';
 import history from './history';
-import { updateMeta } from './DOMUtils';
 import router from './router';
-import schema from './data/schema';
 import createApolloClient from './apollo/create-client.client';
 
 WebFont.load({
   google: {
     families: ['Open Sans:200,400', 'Oswald:200,400'],
   },
-});
-const customFetch = createFetch(fetch, {
-  baseUrl: window.App.apiUrl,
-  graphql,
-  schema,
 });
 const apolloClient = createApolloClient();
 // Global (context) variables that can be easily accessed from any React component
@@ -40,11 +31,9 @@ const context = {
     };
   },
   // Universal HTTP client
-  fetch: customFetch,
   client: apolloClient,
   store: configureStore(window.App.state, {
     client: apolloClient,
-    fetch: customFetch,
     history,
   }),
 };
@@ -108,14 +97,6 @@ async function onLocationChange(location, action) {
         }
 
         document.title = route.title;
-
-        updateMeta('description', route.description);
-        // Update necessary tags in <head> at runtime here, ie:
-        // updateMeta('keywords', route.keywords);
-        // updateCustomMeta('og:url', route.canonicalUrl);
-        // updateCustomMeta('og:image', route.imageUrl);
-        // updateLink('canonical', route.canonicalUrl);
-        // etc.
 
         let scrollX = 0;
         let scrollY = 0;

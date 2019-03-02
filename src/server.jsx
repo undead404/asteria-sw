@@ -1,8 +1,6 @@
 import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
-import { graphql } from 'graphql';
-import nodeFetch from 'node-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -11,7 +9,6 @@ import App from './components/App';
 import Html from './components/Html';
 import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
 import errorPageStyle from './routes/error/ErrorPage.css';
-import createFetch from './createFetch';
 import router from './router';
 // import assets from './asset-manifest.json'; // eslint-disable-line import/no-unresolved
 import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unresolved
@@ -64,19 +61,10 @@ app.get('*', async (req, res, next) => {
       schema,
     });
 
-    // Universal HTTP client
-    const fetch = createFetch(nodeFetch, {
-      apolloClient,
-      baseUrl: config.api.serverUrl,
-      cookie: req.headers.cookie,
-      schema,
-      graphql,
-    });
     const store = configureStore(
       {},
       {
         client: apolloClient,
-        fetch,
         // I should not use `history` on server.. but how I do redirection? follow universal-router
       },
     );
@@ -85,7 +73,6 @@ app.get('*', async (req, res, next) => {
     const context = {
       client: apolloClient,
       insertCss,
-      fetch,
       // The twins below are wild, be careful!
       pathname: req.path,
       query: req.query,

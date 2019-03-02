@@ -4,9 +4,8 @@ function createGraphqlRequest(client) {
   };
 }
 
-export default function createHelpers({ client, fetch, history }) {
+export default function createHelpers({ client, history }) {
   return {
-    fetch,
     history,
     graphqlRequest: createGraphqlRequest(client),
   };
