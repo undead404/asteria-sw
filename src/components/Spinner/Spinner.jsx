@@ -7,9 +7,11 @@ export default class Spinner extends React.Component {
   render() {
     return (
       <div className={style.root}>
-        <div />
-        <div className={style.dot1} />
-        <div className={style.dot2} />
+        <div className={style.container}>
+          <div />
+          <div className={style.dot1} />
+          <div className={style.dot2} />
+        </div>
       </div>
     );
   }

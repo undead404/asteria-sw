@@ -1,9 +1,9 @@
 @import '../variables.scss';
 
-.root {
-  margin: 100px auto;
-  width: 30rem;
-  height: 30rem;
+.container {
+  margin: auto;
+  width: 90vh;
+  height: 90vh;
   position: relative;
   text-align: center;
   -webkit-animation: sk-rotate 2s infinite linear;
@@ -12,12 +12,13 @@
 
 .dot1,
 .dot2 {
-  width: 60%;
-  height: 60%;
+  width: 25%;
+  height: 25%;
   display: inline-block;
   position: absolute;
   top: 0;
-  background-color: $blue;
+  background-color: $black;
+  // background-color: black;
   border-radius: 100%;
   -webkit-animation: sk-bounce 2s infinite ease-in-out;
   animation: sk-bounce 2s infinite ease-in-out;
@@ -65,4 +66,14 @@
     -webkit-transform: scale(1);
     transform: scale(1);
   }
+}
+
+.root {
+  background-color: rgba(255, 255, 255, 0.75);
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 1;
 }

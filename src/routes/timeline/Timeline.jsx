@@ -70,6 +70,7 @@ export default class Timeline extends React.Component {
     return stateChange;
   }
   componentDidMount() {
+    if (!process.env.BROWSER) return;
     WebFont.load({
       active: () => {
         this.setState({
@@ -85,33 +86,30 @@ export default class Timeline extends React.Component {
   render() {
     return (
       <div className={style.root}>
-        {this.state.fontsLoaded ? (
-          <div className={style.container}>
-            <div>
-              {process.env.BROWSER &&
-                this.state.error && (
-                  <div className={style.error}>{this.state.error}</div>
-                )}
-            </div>
-            <div className={style.moviesContainer}>
-              {this.state.movies && this.state.movies.length > 0 ? (
-                this.state.movies.map(movie => (
-                  <Movie
-                    key={movie.title}
-                    maxDuration={this.state.maxDuration}
-                    minDuration={this.state.minDuration}
-                    movie={movie}
-                    width={`${80 / this.state.movies.length}vw`}
-                  />
-                ))
-              ) : (
-                <p>No star wars yet.</p>
+        <div className={style.container}>
+          <div>
+            {process.env.BROWSER &&
+              this.state.error && (
+                <div className={style.error}>{this.state.error}</div>
               )}
-            </div>
           </div>
-        ) : (
-          <Spinner />
-        )}
+          <div className={style.moviesContainer}>
+            {this.state.movies && this.state.movies.length > 0 ? (
+              this.state.movies.map(movie => (
+                <Movie
+                  key={movie.title}
+                  maxDuration={this.state.maxDuration}
+                  minDuration={this.state.minDuration}
+                  movie={movie}
+                  width={`${80 / this.state.movies.length}vw`}
+                />
+              ))
+            ) : (
+              <p>No star wars yet.</p>
+            )}
+          </div>
+        </div>
+        {this.state.fontsLoaded || <Spinner />}
       </div>
     );
   }
