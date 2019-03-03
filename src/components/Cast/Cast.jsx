@@ -33,9 +33,7 @@ export default class Cast extends React.Component {
     };
   }
   static getDerivedStateFromProps(props, state) {
-    console.info(props.query, state.query);
     if (fastDeepEqual(props.query, state.query)) return {};
-    console.info('Changing query state!');
     return {
       query: props.query,
     };

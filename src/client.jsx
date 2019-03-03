@@ -5,7 +5,6 @@ import deepForceUpdate from 'react-deep-force-update';
 import { Provider as ReduxProvider } from 'react-redux';
 import queryString from 'query-string';
 import { createPath } from 'history/PathUtils';
-import WebFont from 'webfontloader';
 import App from './components/App';
 import configureStore from './store/configure-store';
 import history from './history';
@@ -13,11 +12,6 @@ import router from './router';
 import createApolloClient from './apollo/create-client.client';
 import changeQuery from './actions/change-query';
 
-WebFont.load({
-  google: {
-    families: ['Open Sans:200,400', 'Oswald:200,400'],
-  },
-});
 const apolloClient = createApolloClient();
 // Global (context) variables that can be easily accessed from any React component
 // https://facebook.github.io/react/docs/context.html

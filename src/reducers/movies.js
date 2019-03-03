@@ -9,18 +9,15 @@ export default function movies(state = {}, action) {
     case GET_MOVIES_REQUEST:
       return {
         ...state,
-        acquisition: true,
       };
     case GET_MOVIES_FAILURE:
       return {
         ...state,
-        acquisition: false,
         error: action.error,
       };
     case GET_MOVIES_SUCCESS:
       return {
         ...state,
-        acquisition: false,
         cast: action.cast,
         error: null,
         movies: action.movies,

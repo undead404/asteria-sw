@@ -3,8 +3,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import WebFont from 'webfontloader';
 import style from './Timeline.scss';
 import Movie from '../../components/Movie';
+import Spinner from '../../components/Spinner';
 
 function getMaxDuration(movies) {
   if (!movies) return 0;
@@ -48,10 +50,24 @@ export default class Timeline extends React.Component {
     super(props);
     this.state = {
       error: props.error,
+      fontsLoaded: false,
       maxDuration: getMaxDuration(props.movies),
       minDuration: getMinDuration(props.movies),
       movies: props.movies || [],
     };
+
+    if (process.env.BROWSER) {
+      WebFont.load({
+        active: () => {
+          this.setState({
+            fontsLoaded: true,
+          });
+        },
+        google: {
+          families: ['Open Sans:200,400', 'Oswald:200,400'],
+        },
+      });
+    }
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -70,29 +86,33 @@ export default class Timeline extends React.Component {
   render() {
     return (
       <div className={style.root}>
-        <div className={style.container}>
-          <div>
-            {process.env.BROWSER &&
-              this.state.error && (
-                <div className={style.error}>{this.state.error}</div>
+        {this.state.fontsLoaded ? (
+          <div className={style.container}>
+            <div>
+              {process.env.BROWSER &&
+                this.state.error && (
+                  <div className={style.error}>{this.state.error}</div>
+                )}
+            </div>
+            <div className={style.moviesContainer}>
+              {this.state.movies && this.state.movies.length > 0 ? (
+                this.state.movies.map(movie => (
+                  <Movie
+                    key={movie.title}
+                    maxDuration={this.state.maxDuration}
+                    minDuration={this.state.minDuration}
+                    movie={movie}
+                    width={`${80 / this.state.movies.length}vw`}
+                  />
+                ))
+              ) : (
+                <p>No star wars yet.</p>
               )}
+            </div>
           </div>
-          <div className={style.moviesContainer}>
-            {this.state.movies && this.state.movies.length > 0 ? (
-              this.state.movies.map(movie => (
-                <Movie
-                  key={movie.title}
-                  maxDuration={this.state.maxDuration}
-                  minDuration={this.state.minDuration}
-                  movie={movie}
-                  width={`${80 / this.state.movies.length}vw`}
-                />
-              ))
-            ) : (
-              <p>No star wars yet.</p>
-            )}
-          </div>
-        </div>
+        ) : (
+          <Spinner />
+        )}
       </div>
     );
   }
