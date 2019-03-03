@@ -55,19 +55,6 @@ export default class Timeline extends React.Component {
       minDuration: getMinDuration(props.movies),
       movies: props.movies || [],
     };
-
-    if (process.env.BROWSER) {
-      WebFont.load({
-        active: () => {
-          this.setState({
-            fontsLoaded: true,
-          });
-        },
-        google: {
-          families: ['Open Sans:200,400', 'Oswald:200,400'],
-        },
-      });
-    }
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -81,6 +68,18 @@ export default class Timeline extends React.Component {
       stateChange.error = props.error;
     }
     return stateChange;
+  }
+  componentDidMount() {
+    WebFont.load({
+      active: () => {
+        this.setState({
+          fontsLoaded: true,
+        });
+      },
+      google: {
+        families: ['Open Sans:200,400', 'Oswald:200,400'],
+      },
+    });
   }
 
   render() {
