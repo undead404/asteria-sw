@@ -70,7 +70,7 @@ export default class Timeline extends React.Component {
     return stateChange;
   }
   componentDidMount() {
-    if (!process.env.BROWSER) return;
+    if (!window) return;
     WebFont.load({
       active: () => {
         this.setState({
