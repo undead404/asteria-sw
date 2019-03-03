@@ -3,7 +3,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import WebFont from 'webfontloader';
 import style from './Timeline.scss';
 import Movie from '../../components/Movie';
 import Spinner from '../../components/Spinner';
@@ -29,12 +28,14 @@ function getMinDuration(movies) {
 @withStyles(style)
 @connect(state => ({
   error: state.movies.error,
+  fontsLoaded: state.fonts.loaded,
   movies: state.movies.movies,
   query: state.query.query,
 }))
 export default class Timeline extends React.Component {
   static propTypes = {
     error: PropTypes.string,
+    fontsLoaded: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
     movies: PropTypes.arrayOf(
       PropTypes.shape({
         title: PropTypes.string.isRequired,
@@ -45,12 +46,13 @@ export default class Timeline extends React.Component {
   };
   static defaultProps = {
     error: null,
+    fontsLoaded: false,
   };
   constructor(props) {
     super(props);
     this.state = {
       error: props.error,
-      fontsLoaded: false,
+      fontsLoaded: !process.env.BROWSER,
       maxDuration: getMaxDuration(props.movies),
       minDuration: getMinDuration(props.movies),
       movies: props.movies || [],
@@ -58,7 +60,11 @@ export default class Timeline extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
+    console.info(props, state);
     const stateChange = {};
+    if (props.fontsLoaded !== state.fontsLoaded) {
+      stateChange.fontsLoaded = props.fontsLoaded;
+    }
     if (!fastDeepEqual(props.movies, state.movies)) {
       stateChange.maxDuration = getMaxDuration(props.movies);
       stateChange.minDuration = getMinDuration(props.movies);
@@ -67,20 +73,8 @@ export default class Timeline extends React.Component {
     if (props.error !== state.error) {
       stateChange.error = props.error;
     }
+    console.info('state change', stateChange);
     return stateChange;
-  }
-  componentDidMount() {
-    if (!window) return;
-    WebFont.load({
-      active: () => {
-        this.setState({
-          fontsLoaded: true,
-        });
-      },
-      google: {
-        families: ['Open Sans:200,400', 'Oswald:200,400'],
-      },
-    });
   }
 
   render() {

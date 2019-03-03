@@ -41,7 +41,7 @@ export default class Html extends React.Component {
           <link
             rel="dns-prefetch preconnect"
             href="http://starwars.asteriainc.se"
-            crossOrigin
+            crossOrigin="true"
           />
           <meta charSet="utf-8" />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />

@@ -63,6 +63,7 @@ app.get('*', async (req, res, next) => {
 
     const store = configureStore(
       {
+        fonts: { loaded: false },
         query: { query: req.query },
       },
       {

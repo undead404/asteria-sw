@@ -11,6 +11,7 @@ import history from './history';
 import router from './router';
 import createApolloClient from './apollo/create-client.client';
 import changeQuery from './actions/change-query';
+import loadFonts from './actions/fonts';
 
 const apolloClient = createApolloClient();
 // Global (context) variables that can be easily accessed from any React component
@@ -32,6 +33,7 @@ const context = {
     history,
   }),
 };
+context.store.dispatch(loadFonts());
 history.listen(location => {
   const params = location.search
     ? queryString.parse(location.search.slice(1))
