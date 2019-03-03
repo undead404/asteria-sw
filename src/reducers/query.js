@@ -5,9 +5,11 @@ export default function query(state = {}, action) {
     case CHANGE_QUERY:
       return {
         ...state,
-        castName: action.castName,
-        movieTitle: action.movieTitle,
-        order: action.order,
+        query: {
+          castName: action.castName,
+          movieTitle: action.movieTitle,
+          order: action.order,
+        },
       };
     default:
       return state;

@@ -108,7 +108,6 @@ export default class Movie extends React.Component {
     return this.getActiveMovieTitle() === this.props.movie.title;
   }
   showModal() {
-    console.info('show modal');
     this.setState({
       modalShown: true,
     });

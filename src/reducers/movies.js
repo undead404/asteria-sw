@@ -21,6 +21,7 @@ export default function movies(state = {}, action) {
       return {
         ...state,
         acquisition: false,
+        cast: action.cast,
         error: null,
         movies: action.movies,
       };

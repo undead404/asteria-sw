@@ -1,0 +1,47 @@
+@import '../variables.scss';
+
+.link {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-family: $fontFamilyBase;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+}
+
+.name {
+  bottom: -14px;
+  color: white;
+  display: none;
+  font-family: $fontFamilyBase;
+  font-size: 12px;
+  position: absolute;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.portrait {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.portraitContainer {
+  border-radius: 50%;
+  box-sizing: border-box;
+  height: 25px;
+  margin: 0.25rem;
+  overflow: hidden;
+  position: relative;
+  width: 25px;
+}
+
+.root {
+  align-items: center;
+  display: flex;
+  height: 60px;
+  padding: 0.5rem;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
