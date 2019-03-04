@@ -58,9 +58,11 @@ export default class Header extends React.Component {
             Chronological order
           </Link>
         </div>
-        <Link className={style.container} to=".">
-          <img className={style.logo} src={starWarsLogo} alt="Star Wars" />
-        </Link>
+        <div className={style.container} to=".">
+          <Link to=".">
+            <img className={style.logo} src={starWarsLogo} alt="Star Wars" />
+          </Link>
+        </div>
         <Cast />
       </div>
     );

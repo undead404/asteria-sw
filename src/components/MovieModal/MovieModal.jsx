@@ -66,6 +66,10 @@ export default class MovieModal extends React.Component {
     if (!this.props.movie) return '';
     return this.props.movie.media.find(media => media.type === 'image').src;
   }
+  hasCast() {
+    if (!this.props.movie) return false;
+    return this.props.movie.cast && this.props.movie.cast.length > 0;
+  }
   render() {
     if (!process.env.BROWSER) return null;
     const player = this.getPlayer();
@@ -110,22 +114,30 @@ export default class MovieModal extends React.Component {
             <div className={style.infoData}>{this.getHumanizedDuration()}</div>
           </div>
         </div>
-        <h2 className={style.castHead}>Cast</h2>
-        <div className={style.cast}>
-          {this.props.movie.cast.map(castItem => (
-            <div key={castItem.name} className={style.castItem}>
-              <div className={style.portraitContainer}>
-                <img
-                  alt={castItem.name}
-                  className={style.portrait}
-                  src={castItem.media.find(media => media.type === 'image').src}
-                />
-              </div>
-              <span className={style.realName}>{castItem.name}</span>
-              <span className={style.characterName}>{castItem.castName}</span>
+        {this.hasCast() && (
+          <>
+            <h2 className={style.castHead}>Cast</h2>
+            <div className={style.cast}>
+              {this.props.movie.cast.map(castItem => (
+                <div key={castItem.name} className={style.castItem}>
+                  <div className={style.portraitContainer}>
+                    <img
+                      alt={castItem.name}
+                      className={style.portrait}
+                      src={
+                        castItem.media.find(media => media.type === 'image').src
+                      }
+                    />
+                  </div>
+                  <span className={style.realName}>{castItem.name}</span>
+                  <span className={style.characterName}>
+                    {castItem.castName}
+                  </span>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
       </ReactModal>
     );
   }
