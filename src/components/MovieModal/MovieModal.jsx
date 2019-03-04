@@ -1,4 +1,3 @@
-// import queryString from 'query-string';
 import React from 'react';
 import ReactAutoBinder from 'react-auto-binder';
 import ReactModal from 'react-responsive-modal';
@@ -6,7 +5,6 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import ReactPlayer from 'react-player';
 import style from './MovieModal.scss';
-// import Link from '../Link';
 
 @withStyles(style)
 @ReactAutoBinder
@@ -52,6 +50,7 @@ export default class MovieModal extends React.Component {
       media => media.type === 'youtube',
     );
     if (!youtubeMedia) return undefined;
+    if (process.env.BROWSER && window.innerWidth <= 768) return undefined;
     return (
       <ReactPlayer
         className={style.player}
@@ -75,14 +74,12 @@ export default class MovieModal extends React.Component {
         classNames={{ modal: style.modal }}
         open={this.props.show}
         onClose={this.props.close}
+        styles={{ closeIcon: player ? { fill: 'white' } : undefined }}
       >
         <style>{`
           .react-player__preview {
             min-height: 640px;
-            min-width: 720px;
-          }
-          button[class*='closeButton'] path {
-            fill: white;
+            min-width: 100%;
           }
         `}</style>
         <div

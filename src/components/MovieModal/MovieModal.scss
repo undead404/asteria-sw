@@ -54,9 +54,12 @@
 
 .modal {
   color: $black;
-  min-width: 720px;
   padding: 0;
-  top: 18px;
+  top: 85px;
+
+  @media screen and (max-width: 768px) {
+    top: 10vh;
+  }
 }
 
 .player {
@@ -90,7 +93,6 @@
 
 .poster {
   height: 30vh;
-  // width: 20vw;
   z-index: 9999;
 }
 
@@ -104,6 +106,7 @@
   color: $lightgreen;
   font-family: $fontFamilyPretty;
   font-weight: 200;
+  padding: 0.1rem;
   text-align: center;
   text-transform: uppercase;
 }

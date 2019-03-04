@@ -1,14 +1,12 @@
 @import '../../components/variables.scss';
 
-.root {
-  padding-left: 20px;
-  padding-right: 20px;
-  position: relative;
-}
-
 .container {
-  margin: 0 auto;
-  padding: 0 0 40px;
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: flex-start;
+  margin: 0;
 }
 
 .error {
@@ -16,10 +14,23 @@
 }
 
 .moviesContainer {
-  align-items: center;
+  align-items: stretch;
   display: flex;
-  justify-content: space-around;
-  margin: 0 auto;
+  flex-grow: 1;
+  justify-content: space-between;
+  margin: 0;
   max-width: 94vw;
   min-height: 50vh;
+}
+
+.root {
+  padding-left: 20px;
+  padding-right: 20px;
+  position: relative;
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-grow: 1;
+    min-height: 600px;
+  }
 }

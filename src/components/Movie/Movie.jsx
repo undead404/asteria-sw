@@ -7,7 +7,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import style from './Movie.scss';
 import Link from '../Link';
 import MovieModal from '../MovieModal';
-import changeQuery from '../../actions/change-query';
+import history from '../../history';
 
 const MONTH_NAMES = [
   'January',
@@ -31,7 +31,6 @@ const MONTH_NAMES = [
 @ReactAutoBinder
 export default class Movie extends React.Component {
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
     maxDuration: PropTypes.number.isRequired,
     minDuration: PropTypes.number.isRequired,
     movie: PropTypes.shape({
@@ -91,7 +90,11 @@ export default class Movie extends React.Component {
         (this.props.maxDuration - this.props.minDuration)})`;
   }
   deactivate() {
-    this.props.dispatch(changeQuery({ movieTitle: null }));
+    const qs = queryString.stringify({
+      ...this.props.query,
+      movieTitle: undefined,
+    });
+    history.push(qs ? `?${qs}` : '.');
   }
   isActive() {
     return this.getActiveMovieTitle() === this.props.movie.title;

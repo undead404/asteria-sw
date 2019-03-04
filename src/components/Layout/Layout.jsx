@@ -22,7 +22,10 @@ export default class Layout extends React.Component {
       >
         <Header />
         {this.props.children}
-        <div className={style.credits}>vitalii.perehonchuk@eliftech.com</div>
+        <div className={style.credits}>
+          <span>vitalii.perehonchuk</span>
+          <span>@eliftech.com</span>
+        </div>
       </div>
     );
   }
