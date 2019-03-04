@@ -56,6 +56,10 @@
   position: absolute;
 
   @media screen and (max-width: 768px) {
+    bottom: 3rem;
+  }
+
+  @media screen and (max-height: 640px) {
     bottom: 5.5rem;
   }
 }
