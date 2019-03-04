@@ -10,7 +10,7 @@ import style from './MovieModal.scss';
 
 @withStyles(style)
 @ReactAutoBinder
-export default class Movie extends React.Component {
+export default class MovieModal extends React.Component {
   static propTypes = {
     close: PropTypes.func.isRequired,
     movie: PropTypes.shape({
@@ -68,29 +68,13 @@ export default class Movie extends React.Component {
     return this.props.movie.media.find(media => media.type === 'image').src;
   }
   render() {
+    if (!process.env.BROWSER) return null;
     const player = this.getPlayer();
     return (
       <ReactModal
         classNames={{ modal: style.modal }}
         open={this.props.show}
         onClose={this.props.close}
-        // style={{padding: '0px'}}
-        // style={{
-        //   content: {
-        //     color: '#212121',
-        //     margin: '0 auto',
-        //     maxWidth: '720px',
-        //     overflow: 'initial',
-        //     padding: '0px',
-        //     top: '50vh',
-        //     zIndex: 2,
-        //   },
-        //   overlay: {
-        //     position: 'absolute',
-        //     // backgroundColor: 'transparent',
-        //     // position: 'initial',
-        //   },
-        // }}
       >
         <style>{`
           .react-player__preview {

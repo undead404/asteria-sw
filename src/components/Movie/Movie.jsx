@@ -7,6 +7,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import style from './Movie.scss';
 import Link from '../Link';
 import MovieModal from '../MovieModal';
+import changeQuery from '../../actions/change-query';
 
 const MONTH_NAMES = [
   'January',
@@ -30,6 +31,7 @@ const MONTH_NAMES = [
 @ReactAutoBinder
 export default class Movie extends React.Component {
   static propTypes = {
+    dispatch: PropTypes.func.isRequired,
     maxDuration: PropTypes.number.isRequired,
     minDuration: PropTypes.number.isRequired,
     movie: PropTypes.shape({
@@ -52,17 +54,6 @@ export default class Movie extends React.Component {
     }).isRequired,
     width: PropTypes.string.isRequired,
   };
-  constructor(props) {
-    super(props);
-    this.state = {
-      modalShown: false,
-    };
-  }
-  componentDidMount() {
-    if (this.isActive()) {
-      this.showModal();
-    }
-  }
   getActiveMovieTitle() {
     return decodeURIComponent(this.props.query.movieTitle);
   }
@@ -99,18 +90,11 @@ export default class Movie extends React.Component {
       (this.props.movie.duration - this.props.minDuration) /
         (this.props.maxDuration - this.props.minDuration)})`;
   }
-  closeModal() {
-    this.setState({
-      modalShown: false,
-    });
+  deactivate() {
+    this.props.dispatch(changeQuery({ movieTitle: null }));
   }
   isActive() {
     return this.getActiveMovieTitle() === this.props.movie.title;
-  }
-  showModal() {
-    this.setState({
-      modalShown: true,
-    });
   }
   render() {
     return (
@@ -121,10 +105,9 @@ export default class Movie extends React.Component {
             this.props.movie.inactive ? style.inactive : undefined
           }`}
           style={{
-            filter: this.state.modalShown ? 'opacity(30%)' : undefined,
+            filter: this.isActive() ? 'opacity(30%)' : undefined,
             width: this.props.width,
           }}
-          onClick={this.showModal}
           to={this.getLink()}
         >
           <div
@@ -151,8 +134,8 @@ export default class Movie extends React.Component {
           </div>
         </Link>
         <MovieModal
-          close={this.closeModal}
-          show={this.state.modalShown}
+          close={this.deactivate}
+          show={this.isActive()}
           movie={this.props.movie}
         />
       </>

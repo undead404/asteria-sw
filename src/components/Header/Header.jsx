@@ -1,4 +1,3 @@
-import fastDeepEqual from 'fast-deep-equal';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import React from 'react';
@@ -23,40 +22,24 @@ export default class Header extends React.Component {
       movieTitle: PropTypes.string,
     }).isRequired,
   };
-  constructor(props) {
-    super(props);
-    this.state = {
-      query: props.query || {},
-    };
-  }
-  static getDerivedStateFromProps(props, state) {
-    const stateChange = {};
-    if (!fastDeepEqual(props.movies, state.movies)) {
-      stateChange.movies = props.movies;
-    }
-    if (!fastDeepEqual(props.query, state.query)) {
-      stateChange.query = props.query;
-    }
-    return stateChange;
-  }
   getReleaseOrderLink() {
     const qs = queryString.stringify({
-      ...this.state.query,
+      ...this.props.query,
       order: undefined,
     });
     return qs ? `?${qs}` : '.';
   }
   getTimelineOrderLink() {
     return `?${queryString.stringify({
-      ...this.state.query,
+      ...this.props.query,
       order: 'timeline',
     })}`;
   }
   isInTimelineOrder() {
-    if (!this.state.query) {
+    if (!this.props.query) {
       return false;
     }
-    return this.state.query.order === 'timeline';
+    return this.props.query.order === 'timeline';
   }
   render() {
     return (

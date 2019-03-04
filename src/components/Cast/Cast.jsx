@@ -1,4 +1,3 @@
-import fastDeepEqual from 'fast-deep-equal';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
@@ -26,29 +25,17 @@ export default class Cast extends React.Component {
       castName: PropTypes.string,
     }).isRequired,
   };
-  constructor(props) {
-    super(props);
-    this.state = {
-      query: this.props.query,
-    };
-  }
-  static getDerivedStateFromProps(props, state) {
-    if (fastDeepEqual(props.query, state.query)) return {};
-    return {
-      query: props.query,
-    };
-  }
   getCastLink(castName) {
     if (this.isCastActive(castName)) {
       const qs = queryString.stringify({
-        ...this.state.query,
+        ...this.props.query,
         castName: undefined,
       });
       return qs ? `?${qs}` : '.';
     }
     return `?${queryString.stringify(
       {
-        ...this.state.query,
+        ...this.props.query,
         movieTitle: undefined,
         castName,
       },
@@ -56,10 +43,10 @@ export default class Cast extends React.Component {
     )}`;
   }
   isCastActive(castName) {
-    if (!this.state.query) {
+    if (!this.props.query) {
       return false;
     }
-    return decodeURIComponent(this.state.query.castName) === castName;
+    return decodeURIComponent(this.props.query.castName) === castName;
   }
   render() {
     return (
